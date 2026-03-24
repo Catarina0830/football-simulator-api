@@ -13,14 +13,14 @@ import java.sql.PreparedStatement;
 @SpringBootApplication
 public class FootballSimulatorApiApplication {
 
-
 	public static void main(String[] args) {SpringApplication.run(FootballSimulatorApiApplication.class, args);
 
 
 		// 🔴 SRP QUEBRADO: A main faz TUDO (lógica, banco, regra, output)
-		String playerName = "Isagi";
+		String playerName = "Chigiri";
 		int shoot = 80;
 		int defense = 60;
+		int speed = 90;
 		int stamina = 100;
 
 
@@ -35,14 +35,15 @@ public class FootballSimulatorApiApplication {
 
 			// 🔴 SRP + OCP QUEBRADOS: SQL direto dentro da lógica
 			PreparedStatement stmt = conn.prepareStatement(
-					"INSERT INTO player (name, shoot, defense, stamina) VALUES (?, ?, ?, ?)"
+					"INSERT INTO player (name, shoot, defense, speed, stamina) VALUES (?, ?, ?, ?, ?)"
 			);
 
 
 			stmt.setString(1, playerName);
 			stmt.setInt(2, shoot);
 			stmt.setInt(3, defense);
-			stmt.setInt(4, stamina);
+			stmt.setInt(4,speed);
+			stmt.setInt(5, stamina);
 
 
 			stmt.executeUpdate();
@@ -64,7 +65,9 @@ public class FootballSimulatorApiApplication {
 
 
 		// 🔴 OCP QUEBRADO: if gigante (não extensível)
-		if (shoot > opponentDefense) {
+		if (speed >85 && shoot > opponentDefense) {
+			System.out.println(playerName + " fez um gol rápido!");
+		} else if (shoot > opponentDefense) {
 			System.out.println(playerName + " fez um gol!");
 		} else {
 			System.out.println(playerName + " perdeu a chance!");
@@ -72,12 +75,20 @@ public class FootballSimulatorApiApplication {
 
 
 		// 🔴 SRP QUEBRADO: regra de negócio + manipulação de estado
-		stamina -= 10;
+
+		if(speed >80){
+			stamina -= 15;
+			System.out.println(playerName + "correu muito rápido e cansou mais");
+		} else{
+			stamina -= 10;
+		}
 
 
 		// 🔴 LSP QUEBRADO (conceitual): não existe abstração de Player, tudo primitivo
 		if (stamina <= 0) {
 			System.out.println(playerName + " está cansado!");
+		} else if (stamina < 30) {
+			shoot -=10;
 		}
 
 
