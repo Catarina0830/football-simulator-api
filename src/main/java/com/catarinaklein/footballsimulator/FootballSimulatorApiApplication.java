@@ -1,6 +1,7 @@
 package com.catarinaklein.footballsimulator;
 
 
+import com.catarinaklein.footballsimulator.model.Player;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -17,12 +18,8 @@ public class FootballSimulatorApiApplication {
 
 
 		// 🔴 SRP QUEBRADO: A main faz TUDO (lógica, banco, regra, output)
-		String playerName = "Chigiri";
-		int shoot = 80;
-		int defense = 60;
-		int speed = 90;
-		int stamina = 100;
 
+		Player player = new Player("Chigiri", 80, 60, 90, 100);
 
 		// 🔴 DIP QUEBRADO: conexão direta com banco (alto acoplamento)
 		try {
@@ -39,11 +36,11 @@ public class FootballSimulatorApiApplication {
 			);
 
 
-			stmt.setString(1, playerName);
-			stmt.setInt(2, shoot);
-			stmt.setInt(3, defense);
-			stmt.setInt(4,speed);
-			stmt.setInt(5, stamina);
+			stmt.setString(1, player.getName());
+			stmt.setInt(2, player.getShoot());
+			stmt.setInt(3, player.getDefense());
+			stmt.setInt(4, player.getSpeed());
+			stmt.setInt(5, player.getStamina());
 
 
 			stmt.executeUpdate();
@@ -65,30 +62,30 @@ public class FootballSimulatorApiApplication {
 
 
 		// 🔴 OCP QUEBRADO: if gigante (não extensível)
-		if (speed >85 && shoot > opponentDefense) {
-			System.out.println(playerName + " fez um gol rápido!");
-		} else if (shoot > opponentDefense) {
-			System.out.println(playerName + " fez um gol!");
+		if (player.getSpeed() >85 && player.getShoot() > opponentDefense) {
+			System.out.println(player.getName() + " fez um gol rápido!");
+		} else if (player.getShoot() > opponentDefense) {
+			System.out.println(player.getName() + " fez um gol!");
 		} else {
-			System.out.println(playerName + " perdeu a chance!");
+			System.out.println(player.getName() + " perdeu a chance!");
 		}
 
 
 		// 🔴 SRP QUEBRADO: regra de negócio + manipulação de estado
 
-		if(speed >80){
-			stamina -= 15;
-			System.out.println(playerName + "correu muito rápido e cansou mais");
+		if(player.getSpeed() >80){
+			player.setStamina(player.getStamina() - 15);
+			System.out.println(player.getName() + " correu muito rápido e cansou mais");
 		} else{
-			stamina -= 10;
+			player.setStamina(player.getStamina() - 10);
 		}
 
 
 		// 🔴 LSP QUEBRADO (conceitual): não existe abstração de Player, tudo primitivo
-		if (stamina <= 0) {
-			System.out.println(playerName + " está cansado!");
-		} else if (stamina < 30) {
-			shoot -=10;
+		if (player.getStamina() <= 0) {
+			System.out.println(player.getName() + " está cansado!");
+		} else if (player.getStamina() < 30) {
+			player.setStamina(player.getStamina() -10);
 		}
 
 
@@ -99,7 +96,7 @@ public class FootballSimulatorApiApplication {
 		String action;
 
 
-		if (shoot > 75) {
+		if (player.getShoot() > 75) {
 			action = "CHUTE";
 		} else {
 			action = "PASSE";
