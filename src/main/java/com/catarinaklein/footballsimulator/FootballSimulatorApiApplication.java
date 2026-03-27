@@ -2,6 +2,7 @@ package com.catarinaklein.footballsimulator;
 
 
 import com.catarinaklein.footballsimulator.model.Player;
+import com.catarinaklein.footballsimulator.service.PlayerService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -17,7 +18,8 @@ public class FootballSimulatorApiApplication {
 	public static void main(String[] args) {SpringApplication.run(FootballSimulatorApiApplication.class, args);
 
 
-		// 🔴 SRP QUEBRADO: A main faz TUDO (lógica, banco, regra, output)
+		// objeto do model Player criado
+		// player Chigiri criado!!
 
 		Player player = new Player("Chigiri", 80, 60, 90, 100);
 
@@ -54,66 +56,16 @@ public class FootballSimulatorApiApplication {
 		}
 
 
-		// 🔴 SRP QUEBRADO: lógica de jogo misturada com tudo
+		// 🔴 lógica do service
 		System.out.println("Simulando jogo...");
 
+		PlayerService service = new PlayerService();
 
 		int opponentDefense = 70;
 
-
-		// 🔴 OCP QUEBRADO: if gigante (não extensível)
-		if (player.getSpeed() >85 && player.getShoot() > opponentDefense) {
-			System.out.println(player.getName() + " fez um gol rápido!");
-		} else if (player.getShoot() > opponentDefense) {
-			System.out.println(player.getName() + " fez um gol!");
-		} else {
-			System.out.println(player.getName() + " perdeu a chance!");
-		}
-
-
-		// 🔴 SRP QUEBRADO: regra de negócio + manipulação de estado
-
-		if(player.getSpeed() >80){
-			player.setStamina(player.getStamina() - 15);
-			System.out.println(player.getName() + " correu muito rápido e cansou mais");
-		} else{
-			player.setStamina(player.getStamina() - 10);
-		}
-
-
-		// 🔴 LSP QUEBRADO (conceitual): não existe abstração de Player, tudo primitivo
-		if (player.getStamina() <= 0) {
-			System.out.println(player.getName() + " está cansado!");
-		} else if (player.getStamina() < 30) {
-			player.setStamina(player.getStamina() -10);
-		}
-
-
-		// 🔴 ISP QUEBRADO: não existe separação de responsabilidades (tudo depende de tudo)
-
-
-		// 🔴 DIP QUEBRADO novamente: lógica depende de implementação concreta
-		String action;
-
-
-		if (player.getShoot() > 75) {
-			action = "CHUTE";
-		} else {
-			action = "PASSE";
-		}
-
-
-		// 🔴 SRP QUEBRADO: lógica + output juntos
-		System.out.println("Ação escolhida: " + action);
-
-
-		// 🔴 OCP QUEBRADO: adicionar nova ação = editar esse código
-		if (action.equals("CHUTE")) {
-			System.out.println("Finalizando...");
-		} else {
-			System.out.println("Tocando a bola...");
-		}
-
+		service.calcularResultadoDoChute(player, opponentDefense);
+		service.aplicarDesgasteDeStamina(player);
+		service.decidirAcao(player);
 
 		System.out.println("Fim da execução.");
 	}
