@@ -27,10 +27,10 @@ public class FootballSimulatorApiApplication {
 		// 🔴 lógica do service
 		System.out.println("Simulando jogo...");
 
-		PlayerService service = new PlayerService();
-
 		int opponentDefense = 70;
 
+		PlayerService service = new PlayerService(repository);
+		service.criarPlayer(player);
 		service.calcularResultadoDoChute(player, opponentDefense);
 		service.aplicarDesgasteDeStamina(player);
 		service.decidirAcao(player);

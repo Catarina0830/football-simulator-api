@@ -1,13 +1,21 @@
 package com.catarinaklein.footballsimulator.service;
 
 import com.catarinaklein.footballsimulator.model.Player;
+import com.catarinaklein.footballsimulator.repository.PlayerRepository;
+
 
 public class PlayerService {
 
-/*calcularResultadoDoChute
-* aplicarDesgasteDeStamina
-* decidirAcao
-* */
+    private final PlayerRepository repository;
+
+    public PlayerService(PlayerRepository repository){
+
+        this.repository = repository;
+    }
+
+    public void criarPlayer(Player player){
+        repository.salvarPlayer(player);
+    }
 
 /*calcularResultadoDoChute*/
 

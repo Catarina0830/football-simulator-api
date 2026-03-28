@@ -1,11 +1,14 @@
 package com.catarinaklein.footballsimulator.repository;
 
 import com.catarinaklein.footballsimulator.model.Player;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 
+
+@Repository
 public class PlayerRepository {
 
     public void salvarPlayer(Player player){
