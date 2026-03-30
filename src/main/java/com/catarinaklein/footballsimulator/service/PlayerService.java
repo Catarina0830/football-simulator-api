@@ -15,6 +15,9 @@ public class PlayerService {
         this.repository = repository;
     }
 
+    public void deletarPlayer(int id){
+        repository.deletarPlayer(id);
+    }
 
     public List<Player> listarPlayers(){
         return repository.listarPlayers();
