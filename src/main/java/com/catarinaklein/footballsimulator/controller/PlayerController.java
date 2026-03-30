@@ -2,10 +2,7 @@ package com.catarinaklein.footballsimulator.controller;
 
 import com.catarinaklein.footballsimulator.model.Player;
 import com.catarinaklein.footballsimulator.service.PlayerService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -34,4 +31,10 @@ public List<Player> listar(){
         return service.listarPlayers();
     }
 
+
+@DeleteMapping("/{id}")
+public String deletar(@PathVariable int id){
+        service.deletarPlayer(id);
+        return "Player deletado!";
+}
 }

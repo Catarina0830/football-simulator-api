@@ -13,6 +13,11 @@ import java.util.List;
 @Repository
 public class PlayerRepository {
 
+
+    public void deletarPlayer(int id){
+        System.out.println("Deletando player com id: " + id);
+    }
+
     public List<Player> listarPlayers(){
         return new ArrayList<>();
     }
