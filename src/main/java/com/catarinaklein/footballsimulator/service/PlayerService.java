@@ -2,6 +2,7 @@ package com.catarinaklein.footballsimulator.service;
 
 import com.catarinaklein.footballsimulator.model.Player;
 import com.catarinaklein.footballsimulator.repository.PlayerRepository;
+import com.catarinaklein.footballsimulator.requestDTO.PlayerRequestDTO;
 
 import java.util.List;
 
@@ -27,7 +28,17 @@ public class PlayerService {
         return repository.listarPlayers();
     }
 
-    public void criarPlayer(Player player){
+
+    public void criarPlayer(PlayerRequestDTO dto){
+
+        Player player = new Player(
+                dto.getName(),
+                dto.getShoot(),
+                dto.getDefense(),
+                dto.getSpeed(),
+                dto.getStamina()
+        );
+
         repository.salvarPlayer(player);
     }
 

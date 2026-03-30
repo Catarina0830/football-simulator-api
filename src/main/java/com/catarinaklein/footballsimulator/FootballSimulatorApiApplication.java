@@ -3,6 +3,7 @@ package com.catarinaklein.footballsimulator;
 
 import com.catarinaklein.footballsimulator.model.Player;
 import com.catarinaklein.footballsimulator.repository.PlayerRepository;
+import com.catarinaklein.footballsimulator.requestDTO.PlayerRequestDTO;
 import com.catarinaklein.footballsimulator.service.PlayerService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -30,7 +31,6 @@ public class FootballSimulatorApiApplication {
 		int opponentDefense = 70;
 
 		PlayerService service = new PlayerService(repository);
-		service.criarPlayer(player);
 		service.calcularResultadoDoChute(player, opponentDefense);
 		service.aplicarDesgasteDeStamina(player);
 		service.decidirAcao(player);

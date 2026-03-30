@@ -1,6 +1,7 @@
 package com.catarinaklein.footballsimulator.controller;
 
 import com.catarinaklein.footballsimulator.model.Player;
+import com.catarinaklein.footballsimulator.requestDTO.PlayerRequestDTO;
 import com.catarinaklein.footballsimulator.service.PlayerService;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,10 +18,8 @@ public class PlayerController {
     }
 
 @PostMapping
-    public String criarPlayer(){
-    Player player = new Player("Chigiri", 80, 60, 90, 100);
-
-    service.criarPlayer(player);
+    public String criarPlayer(@RequestBody PlayerRequestDTO dto){
+    service.criarPlayer(dto);
 
     return "Player criado!";
 }
