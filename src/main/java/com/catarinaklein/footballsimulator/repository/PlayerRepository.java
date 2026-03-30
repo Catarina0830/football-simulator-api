@@ -14,6 +14,10 @@ import java.util.List;
 public class PlayerRepository {
 
 
+    public void atualizarPlayer(int id, Player player){
+        System.out.println("Atualizando player " + id);
+    }
+
     public void deletarPlayer(int id){
         System.out.println("Deletando player com id: " + id);
     }
