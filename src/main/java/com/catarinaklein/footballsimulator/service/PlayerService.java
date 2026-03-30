@@ -3,6 +3,8 @@ package com.catarinaklein.footballsimulator.service;
 import com.catarinaklein.footballsimulator.model.Player;
 import com.catarinaklein.footballsimulator.repository.PlayerRepository;
 
+import java.util.List;
+
 
 public class PlayerService {
 
@@ -11,6 +13,11 @@ public class PlayerService {
     public PlayerService(PlayerRepository repository){
 
         this.repository = repository;
+    }
+
+
+    public List<Player> listarPlayers(){
+        return repository.listarPlayers();
     }
 
     public void criarPlayer(Player player){
