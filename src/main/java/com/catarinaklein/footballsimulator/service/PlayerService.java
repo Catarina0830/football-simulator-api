@@ -15,6 +15,10 @@ public class PlayerService {
         this.repository = repository;
     }
 
+    public void atualizarPlayer(int id, Player player){
+        repository.atualizarPlayer(id, player);
+    }
+
     public void deletarPlayer(int id){
         repository.deletarPlayer(id);
     }
