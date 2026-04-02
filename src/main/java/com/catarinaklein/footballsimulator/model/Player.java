@@ -3,6 +3,7 @@ package com.catarinaklein.footballsimulator.model;
 public class Player {
 
    private String name; //originalmente estava playerName na main, o padrão agora é name
+   private int id;
    private int shoot;
    private int defense;
    private int speed;
@@ -10,13 +11,14 @@ public class Player {
 
 
    public Player(
+           int id,
            String name,
            int shoot,
            int defense,
            int speed,
            int stamina
    ){
-
+            this.id = id;
             this.name = name;
             this.shoot = shoot;
             this.defense = defense;
@@ -24,6 +26,10 @@ public class Player {
             this.stamina = stamina;
    }
 
+
+    public int getId() {return id;}
+
+    public void setId(int id) {this.id = id;}
 
     public String getName() {
         return name;
