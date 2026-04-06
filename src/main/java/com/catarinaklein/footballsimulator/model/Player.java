@@ -1,24 +1,34 @@
 package com.catarinaklein.footballsimulator.model;
 
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
 public class Player {
 
-   private String name; //originalmente estava playerName na main, o padrão agora é name
+   @Id
+   @GeneratedValue(strategy = GenerationType.IDENTITY)
    private int id;
+
+   private String name; //originalmente estava playerName na main, o padrão agora é nameprivate int id;
    private int shoot;
    private int defense;
    private int speed;
    private int stamina;
 
 
+   public Player(){}
+
    public Player(
-           int id,
            String name,
            int shoot,
            int defense,
            int speed,
            int stamina
    ){
-            this.id = id;
             this.name = name;
             this.shoot = shoot;
             this.defense = defense;

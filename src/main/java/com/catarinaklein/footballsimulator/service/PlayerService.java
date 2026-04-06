@@ -3,10 +3,11 @@ package com.catarinaklein.footballsimulator.service;
 import com.catarinaklein.footballsimulator.model.Player;
 import com.catarinaklein.footballsimulator.repository.PlayerRepository;
 import com.catarinaklein.footballsimulator.requestDTO.PlayerRequestDTO;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-
+@Service
 public class PlayerService {
 
     private final PlayerRepository repository;
@@ -16,31 +17,44 @@ public class PlayerService {
         this.repository = repository;
     }
 
-    public void atualizarPlayer(int id, Player player){
-        repository.atualizarPlayer(id, player);
-    }
-
-    public void deletarPlayer(int id){
-        repository.deletarPlayer(id);
-    }
 
     public List<Player> listarPlayers(){
-        return repository.listarPlayers();
+        return repository.findAll();
+    }
+
+
+    public void deletarPlayer(int id){
+        repository.deleteById(id);
     }
 
 
     public void criarPlayer(PlayerRequestDTO dto){
 
         Player player = new Player(
-                dto.getName(),
-                dto.getShoot(),
-                dto.getDefense(),
-                dto.getSpeed(),
-                dto.getStamina()
+                dto.name(),
+                dto.shoot(),
+                dto.defense(),
+                dto.speed(),
+                dto.stamina()
         );
 
-        repository.salvarPlayer(player);
+        repository.save(player);
     }
+
+
+    public void atualizarPlayer(int id, Player player){
+        Player existente = repository.findById(id)
+                .orElseThrow();
+
+        existente.setName(player.getName());
+        existente.setShoot(player.getShoot());
+        existente.setDefense(player.getDefense());
+        existente.setSpeed(player.getSpeed());
+        existente.setStamina(player.getStamina());
+
+        repository.save(existente);
+    }
+
 
 /*calcularResultadoDoChute*/
 
