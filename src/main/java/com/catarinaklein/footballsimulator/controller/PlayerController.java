@@ -38,9 +38,9 @@ public String deletar(@PathVariable int id){
 }
 
 @PutMapping("/{id}")
-    public String atualizar(@PathVariable int id){
-        Player player = new Player("Novo Nome", 90, 70, 85, 95);
-        service.atualizarPlayer(id, player);
+    public String atualizar(@PathVariable int id,
+                            @RequestBody PlayerRequestDTO dto){
+        service.atualizarPlayer(id, dto);
         return "Player atualizado!";
 }
 }

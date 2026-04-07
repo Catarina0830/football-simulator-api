@@ -42,15 +42,16 @@ public class PlayerService {
     }
 
 
-    public void atualizarPlayer(int id, Player player){
+    public void atualizarPlayer(int id, PlayerRequestDTO dto){
+
         Player existente = repository.findById(id)
                 .orElseThrow();
 
-        existente.setName(player.getName());
-        existente.setShoot(player.getShoot());
-        existente.setDefense(player.getDefense());
-        existente.setSpeed(player.getSpeed());
-        existente.setStamina(player.getStamina());
+        existente.setName(dto.name());
+        existente.setShoot(dto.shoot());
+        existente.setDefense(dto.defense());
+        existente.setSpeed(dto.speed());
+        existente.setStamina(dto.stamina());
 
         repository.save(existente);
     }
