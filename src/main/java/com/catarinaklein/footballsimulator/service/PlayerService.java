@@ -1,115 +1,63 @@
 package com.catarinaklein.footballsimulator.service;
 
+import jakarta.persistence.EntityNotFoundException;
+import com.catarinaklein.footballsimulator.strategy.PlayerAction;
 import com.catarinaklein.footballsimulator.model.Player;
 import com.catarinaklein.footballsimulator.repository.PlayerRepository;
 import com.catarinaklein.footballsimulator.requestDTO.PlayerRequestDTO;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
 public class PlayerService {
 
     private final PlayerRepository repository;
+    private final List<PlayerAction> acoes;
 
-    public PlayerService(PlayerRepository repository){
-
+    public PlayerService(PlayerRepository repository, List<PlayerAction> acoes) {
         this.repository = repository;
+        this.acoes = acoes;
     }
 
-
-    public List<Player> listarPlayers(){
+    // --- MÉTODOS DE BANCO DE DADOS ---
+    public List<Player> listarTodos() {
         return repository.findAll();
     }
 
-
-    public void deletarPlayer(int id){
-        repository.deleteById(id);
-    }
-
-
-    public void criarPlayer(PlayerRequestDTO dto){
-
-        Player player = new Player(
-                dto.name(),
-                dto.shoot(),
-                dto.defense(),
-                dto.speed(),
-                dto.stamina()
-        );
-
+    public void criar(PlayerRequestDTO dto) {
+        Player player = new Player(dto.name(), dto.shoot(), dto.defense(), dto.speed(), dto.stamina());
         repository.save(player);
     }
 
-
-    public void atualizarPlayer(int id, PlayerRequestDTO dto){
-
-        Player existente = repository.findById(id)
-                .orElseThrow();
-
-        existente.setName(dto.name());
-        existente.setShoot(dto.shoot());
-        existente.setDefense(dto.defense());
-        existente.setSpeed(dto.speed());
-        existente.setStamina(dto.stamina());
-
-        repository.save(existente);
+    public void deletar(int id) {
+        repository.deleteById(id);
     }
 
+    public void atualizar(Integer id, PlayerRequestDTO dto) {
+        Player p = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        p.setName(dto.name());
+        p.setShoot(dto.shoot());
+        p.setDefense(dto.defense());
+        p.setSpeed(dto.speed());
+        p.setStamina(dto.stamina());
+        repository.save(p);
+    };
 
-/*calcularResultadoDoChute*/
+    // --- MÉTODOS DE LÓGICA DE JOGO (SOLID) ---
+    public void simularAcao(int id) {
+        Player player = repository.findById(id).orElseThrow(EntityNotFoundException::new);
 
-    public void calcularResultadoDoChute(Player player, int opponentDefense){
+        acoes.stream()
+                .filter(a -> a.seAplica(player))
+                .findFirst()
+                .ifPresent(a -> a.executar(player));
 
-
-        if (player.getSpeed() >85 && player.getShoot() > opponentDefense) {
-            System.out.println(player.getName() + " fez um gol rápido!");
-        } else if (player.getShoot() > opponentDefense) {
-            System.out.println(player.getName() + " fez um gol!");
-        } else {
-            System.out.println(player.getName() + " perdeu a chance!");
-        }
+        aplicarDesgaste(player);
+        repository.save(player);
     }
 
-/*aplicarDesgasteDeStamina*/
-
-    public void aplicarDesgasteDeStamina(Player player){
-
-        if(player.getSpeed() >80){
-            player.setStamina(player.getStamina() - 15);
-            System.out.println(player.getName() + " correu muito rápido e cansou mais");
-        } else{
-            player.setStamina(player.getStamina() - 10);
-        }
-
-        if (player.getStamina() <= 0) {
-            System.out.println(player.getName() + " está cansado!");
-        } else if (player.getStamina() < 30) {
-            player.setStamina(player.getStamina() -10);
-        }
-
+    private void aplicarDesgaste(Player p) {
+        int perda = (p.getSpeed() > 80) ? 15 : 10;
+        p.setStamina(Math.max(0, p.getStamina() - perda));
     }
-
-/*decidirAcao*/
-
-    public void decidirAcao(Player player){
-
-        String action; //isso deveria ser um parâmetro?
-
-        if (player.getShoot() > 75) {
-            action = "CHUTE";
-        } else {
-            action = "PASSE";
-        }
-
-        System.out.println("Ação escolhida: " + action);
-
-
-        if (action.equals("CHUTE")) {
-            System.out.println("Finalizando...");
-        } else {
-            System.out.println("Tocando a bola...");
-        }
-    }
-
 }

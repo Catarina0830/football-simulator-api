@@ -19,7 +19,7 @@ public class PlayerController {
 
 @PostMapping
     public String criarPlayer(@RequestBody PlayerRequestDTO dto){
-    service.criarPlayer(dto);
+    service.criar(dto);
 
     return "Player criado!";
 }
@@ -27,20 +27,20 @@ public class PlayerController {
 
 @GetMapping
 public List<Player> listar(){
-        return service.listarPlayers();
+        return service.listarTodos();
     }
 
 
 @DeleteMapping("/{id}")
 public String deletar(@PathVariable int id){
-        service.deletarPlayer(id);
+        service.deletar(id);
         return "Player deletado!";
 }
 
 @PutMapping("/{id}")
     public String atualizar(@PathVariable int id,
                             @RequestBody PlayerRequestDTO dto){
-        service.atualizarPlayer(id, dto);
+        service.atualizar(id, dto);
         return "Player atualizado!";
 }
 }
